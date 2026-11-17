@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NOIRÉ | Luxury Coffee Atelier</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+ background:#100e0b;
+ color:#f5ead8;
+ font-family:'Tajawal',sans-serif;
+}
+header{
+ height:80px;
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ padding:0 7%;
+ background:#100e0b;
+ border-bottom:1px solid #493a25;
+ position:sticky;
+ top:0;
+ z-index:10;
+}
+.logo{
+ font:30px 'Playfair Display';
+ letter-spacing:5px;
+ color:#d6b77c;
+}
+nav{
+ display:flex;
+ gap:25px;
+}
+nav a{
+ color:#eee0c8;
+ text-decoration:none;
+ font-size:14px;
+}
+nav a:hover{color:#d6b77c}
+button{
+ cursor:pointer;
+}
+.lang{
+ background:none;
+ border:1px solid #b99a61;
+ color:#d6b77c;
+ padding:10px 15px;
+}
+.hero{
+ min-height:85vh;
+ display:flex;
+ align-items:center;
+ padding:8%;
+ background:
+ linear-gradient(90deg,#100e0b 5%,#100e0bcc 50%,#100e0b33),
+ url('https://images.unsplash.com/photo-1442512595331-e89e73853f31?auto=format&fit=crop&w=1800&q=85') center/cover;
+}
+.hero-content{max-width:600px}
+.hero small{
+ color:#d6b77c;
+ letter-spacing:4px;
+}
+.hero h1{
+ font:clamp(55px,8vw,95px) 'Playfair Display';
+ margin:25px 0;
+ line-height:1.1;
+}
+.hero h1 span{color:#d6b77c}
+.hero p{
+ color:#c8baa5;
+ line-height:2;
+ font-size:17px;
+}
+.main-btn{
+ display:inline-block;
+ margin-top:30px;
+ padding:16px 35px;
+ background:#c6a56b;
+ color:#100e0b;
+ text-decoration:none;
+ font-weight:bold;
+ border:none;
+}
+section{padding:90px 8%}
+.heading{text-align:center;margin-bottom:50px}
+.heading small{
+ color:#c6a56b;
+ letter-spacing:4px;
+}
+.heading h2{
+ font:45px 'Playfair Display';
+ margin-top:15px;
+}
+.products{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:25px;
+}
+.card{
+ background:#1c1812;
+ border:1px solid #493a25;
+ transition:.3s;
+}
+.card:hover{transform:translateY(-8px)}
+.card img{
+ width:100%;
+ height:260px;
+ object-fit:cover;
+}
+.info{padding:22px}
+.info h3{
+ font:25px 'Playfair Display';
+ margin-bottom:10px;
+}
+.info p{
+ color:#a99b87;
+ font-size:13px;
+ line-height:1.8;
+}
+.bottom{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ margin-top:20px;
+}
+.price{color:#d6b77c;font-size:18px}
+.add{
+ background:#c6a56b;
+ color:#100e0b;
+ border:0;
+ padding:11px 18px;
+ font-weight:bold;
+}
+.about{
+ background:#19150f;
+ text-align:center;
+}
+.about p{
+ max-width:650px;
+ margin:25px auto 0;
+ line-height:2.2;
+ color:#b9aa95;
+}
+footer{
+ padding:35px;
+ text-align:center;
+ border-top:1px solid #493a25;
+ color:#a99b87;
+}
+.cart{
+ position:fixed;
+ bottom:20px;
+ left:20px;
+ background:#c6a56b;
+ color:#100e0b;
+ border:0;
+ padding:15px 23px;
+ z-index:20;
+ font-weight:bold;
+}
+#cartBox{
+ display:none;
+ position:fixed;
+ inset:0;
+ background:#000b;
+ z-index:30;
+ align-items:center;
+ justify-content:center;
+ padding:15px;
+}
+.cart-content{
+ background:#1c1812;
+ border:1px solid #c6a56b;
+ padding:25px;
+ width:100%;
+ max-width:450px;
+ max-height:85vh;
+ overflow:auto;
+}
+.cart-content h2{
+ font:30px 'Playfair Display';
+ color:#d6b77c;
+ margin-bottom:20px;
+}
+.cart-content p{margin:12px 0}
+.close{
+ float:left;
+ background:none;
+ border:0;
+ color:white;
+ font-size:25px;
+}
+@media(max-width:750px){
+ nav{display:none}
+ .products{grid-template-columns:repeat(2,1fr);gap:12px}
+ .card img{height:170px}
+ .info{padding:12px}
+ .info h3{font-size:19px}
+ .info p{font-size:12px}
+ .add{padding:9px;font-size:11px}
+ .hero{min-height:75vh}
+ .heading h2{font-size:35px}
+}
+@media(max-width:400px){
+ .products{grid-template-columns:1fr}
+ .card img{height:230px}
+}
+</style>
+</head>
+<body>
+<header>
+ <div class="logo">NOIRÉ</div>
+ <nav>
+  <a href="#home">الرئيسية</a>
+  <a href="#menu">القائمة</a>
+  <a href="#about">قصتنا</a>
+  <a href="#contact">تواصل معنا</a>
+ </nav>
+ <button class="lang" onclick="changeLang()">EN</button>
+</header>
+<div class="hero" id="home">
+ <div class="hero-content">
+  <small>THE ART OF COFFEE</small>
+  <h1>لحظتك.<br><span>بأسلوب أرقى.</span></h1>
+  <p>
+   اكتشف عالماً من القهوة المختصة والنكهات الاستثنائية.
+   كل فنجان قصة، وكل لحظة تستحق الأفضل.
+  </p>
+  <a href="#menu" class="main-btn">اكتشف القائمة ↗</a>
+ </div>
+</div>
+<section id="menu">
+ <div class="heading">
+  <small>OUR COLLECTION</small>
+  <h2>قائمة NOIRÉ</h2>
+ </div>
+ <div class="products" id="products"></div>
+</section>
+<section class="about" id="about">
+ <div class="heading">
+  <small>OUR STORY</small>
+  <h2>قصتنا</h2>
+ </div>
+ <p>
+  NOIRÉ ليست مجرد قهوة، بل تجربة تجمع بين الفخامة
+  والجودة والإبداع. نختار أجود أنواع القهوة ونقدمها
+  بطريقة تجعل كل زيارة ذكرى مختلفة.
+ </p>
+</section>
+<section id="contact">
+ <div class="heading">
+  <small>CONTACT</small>
+  <h2>تواصل معنا</h2>
+ </div>
+ <p style="text-align:center;color:#c6a56b">
+  NOIRÉ COFFEE ATELIER · UAE
+ </p>
+</section>
+<footer>
+ NOIRÉ © 2026 — ALL RIGHTS RESERVED
+</footer>
+<button class="cart" onclick="openCart()">
+ 🛍️ السلة (<span id="count">0</span>)
+</button>
+<div id="cartBox">
+ <div class="cart-content">
+  <button class="close" onclick="closeCart()">×</button>
+  <h2>سلة المشتريات</h2>
+  <div id="cartItems"></div>
+  <hr style="border-color:#493a25;margin:20px 0">
+  <h3>الإجمالي: AED <span id="total">0</span></h3>
+ </div>
+</div>
+<script>
+const menu=[
+ {
+  id:1,
+  name:"Spanish Latte",
+  desc:"إسبريسو مع الحليب ولمسة حلاوة.",
+  price:24,
+  image:"https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=700"
+ },
+ {
+  id:2,
+  name:"Iced V60",
+  desc:"قهوة مختصة باردة بنكهة مميزة.",
+  price:26,
+  image:"https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=700"
+ },
+ {
+  id:3,
+  name:"Flat White",
+  desc:"إسبريسو غني مع حليب مخملي.",
+  price:21,
+  image:"https://images.unsplash.com/photo-1534778101976-62847782c213?w=700"
+ },
+ {
+  id:4,
+  name:"Cold Brew",
+  desc:"قهوة باردة باستخلاص طويل.",
+  price:23,
+  image:"https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=700"
+ },
+ {
+  id:5,
+  name:"Cheesecake",
+  desc:"تشيز كيك كريمي فاخر.",
+  price:29,
+  image:"https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=700"
+ },
+ {
+  id:6,
+  name:"Butter Croissant",
+  desc:"كرواسون طازج بطبقات مقرمشة.",
+  price:17,
+  image:"https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=700"
+ }
+];
+let cart=[];
+function renderProducts(){
+ document.getElementById("products").innerHTML=
+ menu.map(p=>`
+ <div class="card">
+  <img src="${p.image}" alt="${p.name}">
+  <div class="info">
+   <h3>${p.name}</h3>
+   <p>${p.desc}</p>
+   <div class="bottom">
+    <span class="price">AED ${p.price}</span>
+    <button class="add" onclick="add(${p.id})">+ أضف للسلة</button>
+   </div>
+  </div>
+ </div>
+ `).join("");
+}
+function add(id){
+ let item=cart.find(p=>p.id===id);
+ if(item){
+  item.qty++;
+ }else{
+  cart.push({...menu.find(p=>p.id===id),qty:1});
+ }
+ updateCart();
+}
+function updateCart(){
+ document.getElementById("count").textContent=
+ cart.reduce((s,p)=>s+p.qty,0);
+ document.getElementById("cartItems").innerHTML=
+ cart.map(p=>`
+ <p>
+ ${p.name} × ${p.qty}
+ <span style="color:#d6b77c">AED ${p.price*p.qty}</span>
+ <button onclick="removeItem(${p.id})">×</button>
+ </p>
+ `).join("") || "السلة فارغة";
+ let total=cart.reduce((s,p)=>s+p.price*p.qty,0);
+ document.getElementById("total").textContent=total;
+}
+function removeItem(id){
+ cart=cart.filter(p=>p.id!==id);
+ updateCart();
+}
+function openCart(){
+ document.getElementById("cartBox").style.display="flex";
+}
+function closeCart(){
+ document.getElementById("cartBox").style.display="none";
+}
+function changeLang(){
+ alert("قريباً: English Version");
+}
+renderProducts();
+</script>
+</body>
+</html>
