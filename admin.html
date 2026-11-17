@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NOIRÉ | Admin</title>
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;background:#100e0b;color:#f5eee3;
+ font-family:Arial,sans-serif;
+}
+header{
+ padding:24px 7%;border-bottom:1px solid #3b3022;
+ display:flex;justify-content:space-between;align-items:center;
+}
+.logo{font-size:27px;letter-spacing:5px;color:#d5b477}
+.badge{color:#bda477;font-size:12px}
+main{max-width:1100px;margin:35px auto;padding:0 20px}
+h1{font-size:29px;font-weight:400}
+.subtitle{color:#a99c89}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin:30px 0}
+.card,.panel{
+ background:#1b1813;border:1px solid #403323;
+ border-radius:13px;padding:22px;
+}
+.stat-number{font-size:28px;color:#d5b477;margin-top:12px}
+.panel{margin-top:20px}
+.panel h2{font-size:19px;font-weight:400}
+form{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+input{
+ width:100%;padding:14px;border-radius:8px;
+ border:1px solid #50412d;background:#100e0b;
+ color:white;outline:none;
+}
+input:focus{border-color:#d5b477}
+button{
+ border:0;border-radius:8px;padding:13px 18px;
+ cursor:pointer;font-weight:bold;
+}
+.add{background:#d5b477;color:#17120a;grid-column:1/-1}
+.delete{background:#542b25;color:white}
+.edit{background:#51432e;color:white}
+.products{display:grid;gap:12px;margin-top:20px}
+.product{
+ display:flex;align-items:center;gap:14px;
+ background:#211d17;padding:12px;border-radius:10px;
+}
+.product img{width:65px;height:65px;object-fit:cover;border-radius:8px}
+.details{flex:1}
+.details small{color:#c4a878}
+.actions{display:flex;gap:7px}
+.actions button{padding:9px}
+@media(max-width:600px){
+ form{grid-template-columns:1fr}
+ .stats{grid-template-columns:1fr 1fr}
+ .product{flex-wrap:wrap}
+ .actions{width:100%}
+ .actions button{flex:1}
+}
+</style>
+</head>
+<body>
+<header>
+ <div class="logo">NOIRÉ</div>
+ <div class="badge">ADMINISTRATION PANEL</div>
+</header>
+<main>
+ <h1>لوحة التحكم</h1>
+ <p class="subtitle">مرحباً بك في إدارة NOIRÉ Coffee Atelier.</p>
+ <section class="stats">
+  <div class="card">
+   إجمالي المنتجات
+   <div class="stat-number" id="count">0</div>
+  </div>
+  <div class="card">
+   حالة لوحة الإدارة
+   <div class="stat-number">ACTIVE</div>
+  </div>
+ </section>
+ <section class="panel">
+  <h2 id="formTitle">إضافة منتج جديد</h2>
+  <form id="productForm">
+   <input id="name" placeholder="اسم المنتج" required>
+   <input id="price" type="number" min="0" step="0.5" placeholder="السعر بالدرهم" required>
+   <input id="image" type="url" placeholder="رابط صورة المنتج">
+   <input id="category" placeholder="القسم (قهوة، حلويات...)" required>
+   <button class="add" id="saveButton">إضافة المنتج</button>
+  </form>
+ </section>
+ <section class="panel">
+  <h2>إدارة المنتجات</h2>
+  <div class="products" id="products"></div>
+ </section>
+</main>
+<script>
+const defaultProducts = [
+ {id:1,name:"Spanish Latte",price:24,image:"",category:"Coffee"},
+ {id:2,name:"Iced V60",price:26,image:"",category:"Specialty Coffee"},
+ {id:3,name:"Flat White",price:21,image:"",category:"Coffee"}
+];
+let items = JSON.parse(localStorage.getItem("noire_products")) || defaultProducts;
+let editingId = null;
+const form = document.getElementById("productForm");
+function save(){
+ localStorage.setItem("noire_products",JSON.stringify(items));
+ render();
+}
+function render(){
+ document.getElementById("count").textContent=items.length;
+ document.getElementById("products").innerHTML="";
+ items.forEach(item=>{
+  const div=document.createElement("div");
+  div.className="product";
+  const img=document.createElement("img");
+  img.src=item.image || "https://placehold.co/100x100/211d17/d5b477?text=NOIRE";
+  img.alt=item.name;
+  const details=document.createElement("div");
+  details.className="details";
+  const name=document.createElement("strong");
+  name.textContent=item.name;
+  const info=document.createElement("div");
+  info.innerHTML="";
+  const price=document.createElement("small");
+  price.textContent=`${item.price} AED · ${item.category}`;
+  details.append(name,document.createElement("br"),price);
+  const actions=document.createElement("div");
+  actions.className="actions";
+  const edit=document.createElement("button");
+  edit.className="edit";
+  edit.textContent="تعديل";
+  edit.onclick=()=>editProduct(item.id);
+  const del=document.createElement("button");
+  del.className="delete";
+  del.textContent="حذف";
+  del.onclick=()=>deleteProduct(item.id);
+  actions.append(edit,del);
+  div.append(img,details,actions);
+  document.getElementById("products").append(div);
+ });
+}
+form.addEventListener("submit",e=>{
+ e.preventDefault();
+ const product={
+  id:editingId || Date.now(),
+  name:document.getElementById("name").value.trim(),
+  price:Number(document.getElementById("price").value),
+  image:document.getElementById("image").value.trim(),
+  category:document.getElementById("category").value.trim()
+ };
+ if(editingId){
+  items=items.map(p=>p.id===editingId?product:p);
+ }else{
+  items.push(product);
+ }
+ editingId=null;
+ form.reset();
+ document.getElementById("formTitle").textContent="إضافة منتج جديد";
+ document.getElementById("saveButton").textContent="إضافة المنتج";
+ save();
+});
+function editProduct(id){
+ const p=items.find(x=>x.id===id);
+ editingId=id;
+ document.getElementById("name").value=p.name;
+ document.getElementById("price").value=p.price;
+ document.getElementById("image").value=p.image;
+ document.getElementById("category").value=p.category;
+ document.getElementById("formTitle").textContent="تعديل المنتج";
+ document.getElementById("saveButton").textContent="حفظ التعديلات";
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+function deleteProduct(id){
+ if(!confirm("متأكد من حذف المنتج؟"))return;
+ items=items.filter(p=>p.id!==id);
+ save();
+}
+render();
+</script>
+</body>
+</html>
